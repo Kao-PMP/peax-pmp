@@ -1,3 +1,5 @@
+if (!require(miscTools)) install.packages("miscTools")
+
 thetime<-as.numeric(Sys.time())
 n<-16
 curtree<-1
