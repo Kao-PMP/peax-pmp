@@ -1,0 +1,1 @@
+{"samples":60,"value":[0],"label":"[1]  patientid<32","type":"split","children":[{"samples":30,"value":[0],"label":"Pheno1","type":"leaf"},{"samples":30,"value":[0],"label":"Pheno2","type":"leaf"}]}

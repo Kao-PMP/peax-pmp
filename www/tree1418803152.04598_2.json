@@ -1,0 +1,1 @@
+{"samples":32,"value":[0],"label":"[1]  age<41","type":"split","children":[{"samples":10,"value":[0],"label":"Pheno1","type":"leaf"},{"samples":22,"value":[0],"label":"Pheno2","type":"leaf"}]}
