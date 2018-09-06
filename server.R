@@ -58,7 +58,7 @@ shinyServer(function(input, output) {
       y<-read.csv(mirFile$datapath,check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
     else if (input$loaddemo > 0) {
       #message("DEFAULT DATASET")
-      y<-read.csv("./data/peax_demo_mrna.csv", header=TRUE, sep=",", quote="\"")
+      y<-read.csv("./data/peax_demo_mrna2.csv", header=TRUE, sep=",", quote="\"")
     }
     else
       return(NULL)
@@ -90,25 +90,25 @@ shinyServer(function(input, output) {
       return(NULL)
     z<-read.csv(mrnaFile$datapath, check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
     return(z)})
-  mrnaInput<-reactive({
-    #message("READING MRNAINPUT")
-    mrnaFile <- input$mrnafile
-    
-    if (!is.null(mrnaFile))
-      z<-read.csv(mrnaFile$datapath, check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
-    else if (input$loaddemo > 0) {
-      #message("DEFAULT DATASET")
-      z<-read.csv("./data/peax_demo_mir.csv", header=TRUE, sep=",", quote="\"")
-    }
-    else
-      return(NULL)
-    if (input$transpose2) {
-      #message("Transposing Exp2...")
-      zn=z[,1]
-      z<-as.data.frame(t(z[,2:ncol(z)]))
-      z<-setNames(z,zn)
-    }
-    return(z)})
+  # mrnaInput<-reactive({
+  #   #message("READING MRNAINPUT")
+  #   mrnaFile <- input$mrnafile
+  #   
+  #   if (!is.null(mrnaFile))
+  #     z<-read.csv(mrnaFile$datapath, check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
+  #   else if (input$loaddemo > 0) {
+  #     #message("DEFAULT DATASET")
+  #     z<-read.csv("./data/peax_demo_mir.csv", header=TRUE, sep=",", quote="\"")
+  #   }
+  #   else
+  #     return(NULL)
+  #   if (input$transpose2) {
+  #     #message("Transposing Exp2...")
+  #     zn=z[,1]
+  #     z<-as.data.frame(t(z[,2:ncol(z)]))
+  #     z<-setNames(z,zn)
+  #   }
+  #   return(z)})
   
   rep.row<-function(x,n){
     matrix(rep(x,each=n),nrow=n)
@@ -174,19 +174,19 @@ shinyServer(function(input, output) {
     y <- mirInput()
     
     ds1<-input$depth_slider1
-    ds2<-input$depth_slider2
+    #ds2<-input$depth_slider2
     
-    if (curtr==1) {
+    #if (curtr==1) {
       oldselmir=oldselmir1
       ds<-input$depth_slider1
       tbl<-input$testTbl1_1
-    }
-    else
-    {
-      oldselmir=oldselmir2
-      ds<-input$depth_slider2
-      tbl<-input$testTbl2_1
-    }
+    #}
+    # else
+    # {
+    #   oldselmir=oldselmir2
+    #   ds<-input$depth_slider2
+    #   tbl<-input$testTbl2_1
+    # }
     
     #selmir<-tbl[curtr]
     selmir<-tbl
@@ -254,7 +254,7 @@ shinyServer(function(input, output) {
     #x<-x[c(input[["hist_input2"]],colnames(x)[1],sapply(1:(2^ds-1),function(x) input[[paste0("var",curtr,"_",x)]]))]
     x <- x[complete.cases(x), ]
     #message("DEBUG:getPheno3")
-    y <- mirInput()
+    #y <- mirInput()
     
     # bind all leaves
     #e.g. depth 3
@@ -272,6 +272,7 @@ shinyServer(function(input, output) {
     }
     #message("DEBUG:getPheno3g")
     #message("DEBUG:Leaving getPheno")
+    #message(paste0("GetPheno: ",ret))
     return(ret)
   }
   getPheno1<-reactive({
@@ -284,168 +285,168 @@ shinyServer(function(input, output) {
   
   
   
-  testcor <-function(curtr)
-  {
-    #if (tr==1) {
-    #  data<-getPheno1()
-    #}
-    #else {
-    #  data<-getPheno2()
-    #}
-    #if (is.null(data)) {
-    #	return(NULL)
-    #}
-    #message("DEBUG:Enter testcor()...")
-    z<-mrnaInput()
-    y<-mirInput()
-    
-    if (is.null(z) || is.null(y)) {
-      return(NULL)
-    }
-    y<-y[y[,1] %in% z[,1],]
-    z<-z[z[,1] %in% y[,1],]
-    
-    # do we need Group for corr?
-    #z$Group<-data$Group
-    
-    # remove patients (col 1) before calculating
-    
-    if (curtr==1)
-      tbl<-input$testTbl1_1
-    else
-      tbl<-input$testTbl2_1
-    
-    selmir<-tbl[curtr]
-    
-    if (is.null(selmir) || is.na(selmir))
-    {
-      #message("selmir undefined in testcor")
-      selmir<-oldselmir
-    }
-    #message(paste0("DEBUG:Starting correlation...:",selmir))
-    pvals<-cor(y[selmir],z[-1],method="spearman")
-    #message("DEBUG:Ending correlation...")
-    #pvals<-pvals[,abs(pvals)>0.6]
-    pvals<-sort(pvals[1,])
-    #nm<-names(pvals)
-    nm<-names(pvals)
-    zcor=data.frame(Probe = nm,Spearman=round(as.numeric(pvals),4))
-    #message("DEBUG:Leaving testcor()...")
-    return(zcor)
-  }
+  # testcor <-function(curtr)
+  # {
+  #   #if (tr==1) {
+  #   #  data<-getPheno1()
+  #   #}
+  #   #else {
+  #   #  data<-getPheno2()
+  #   #}
+  #   #if (is.null(data)) {
+  #   #	return(NULL)
+  #   #}
+  #   #message("DEBUG:Enter testcor()...")
+  #   z<-mrnaInput()
+  #   y<-mirInput()
+  #   
+  #   if (is.null(z) || is.null(y)) {
+  #     return(NULL)
+  #   }
+  #   y<-y[y[,1] %in% z[,1],]
+  #   z<-z[z[,1] %in% y[,1],]
+  #   
+  #   # do we need Group for corr?
+  #   #z$Group<-data$Group
+  #   
+  #   # remove patients (col 1) before calculating
+  #   
+  #   if (curtr==1)
+  #     tbl<-input$testTbl1_1
+  #   else
+  #     tbl<-input$testTbl2_1
+  #   
+  #   selmir<-tbl[curtr]
+  #   
+  #   if (is.null(selmir) || is.na(selmir))
+  #   {
+  #     #message("selmir undefined in testcor")
+  #     selmir<-oldselmir
+  #   }
+  #   #message(paste0("DEBUG:Starting correlation...:",selmir))
+  #   pvals<-cor(y[selmir],z[-1],method="spearman")
+  #   #message("DEBUG:Ending correlation...")
+  #   #pvals<-pvals[,abs(pvals)>0.6]
+  #   pvals<-sort(pvals[1,])
+  #   #nm<-names(pvals)
+  #   nm<-names(pvals)
+  #   zcor=data.frame(Probe = nm,Spearman=round(as.numeric(pvals),4))
+  #   #message("DEBUG:Leaving testcor()...")
+  #   return(zcor)
+  # }
   
   
-  testdf1 <- reactive(
-    {
-      return(testdf(1))
-    })
-  testdf2 <- reactive(
-    {
-      return(testdf(2))
-    })
-  
-  testdf<-function(tr) {
-    ts<-input$tabSelected
-    #message(ts)
-    a <- input$range_slider1_1
-    
-    if (tr==1) {
-      data<-getPheno1()
-    }
-    else {
-      data<-getPheno2()
-    }
-    if (is.null(data)) {
-      #message("DEBUG:NULL data in getPheno")
-      return(NULL)
-    }
-    #message(paste0("DEBUG:Enter testdf()... with tree:",tr))
-    y<-mirInput()
-    data<-data[data[,1] %in% y[,1],]
-    y<-y[y[,1] %in% data[,1],]
-    
-    y$Group<-data$Group
-    y$Group<-as.factor(y$Group)
-    yaov<-0
-    
-    #message("DEBUG:begin Anova step")
-    
-    y$Group<-data$Group
-    y<-data.frame(as.matrix(y[-1]))
-    y$Group<-as.factor(y$Group)
-    Klist<-sort(unique(y$Group))
-    #message(paste0("DEBUG:Klist=",Klist))
-    K<-length(Klist)
-    ### FILTER HERE
-    Yib<-mclapply(Klist,function(tmp) colMedians(y[y$Group==tmp,][-ncol(y)]))
-    
-    if (input$searchall > oldsearchall) {
-      oldsearchall<<-input$searchall
-      oldsearch<<-input$search
-      curfilt<<-NULL
-    }
-    
-    
-    if (input$search > oldsearch)
-    {
-      #message(paste0("Search:",input$search," ",oldsearch))
-      oldsearch<<-input$search
-      curfilt<<-input$testTbl1_1
-      if (is.null(curfilt)) {
-        curfilt<<-oldselmir1
-      }
-      #message(paste0("New Search!",curfilt))
-    }
-    if (!is.null(curfilt)) {
-      Ydf<-data.frame(Yib)
-      curthresh<-input$fold_thresh/100
-      Yfilt<-mclapply(Klist,function(tmp) median(y[y$Group==tmp,curfilt]))
-      Yfilt<-(Yfilt<(1-curthresh))*-1+(Yfilt>(1+curthresh)*1)
-      Ydf<-data.frame((Ydf<(1-curthresh))*-1+(Ydf>(1+curthresh)*1))
-      found<-t(data.frame(colSums(t(Ydf)==Yfilt)))
-      names(found)<-colnames(y)[-ncol(y)]
-      found<-found[found==K]
-      found<-names(found)
-      y<-y[found]
-      y$Group<-as.factor(data$Group)
-      
-    }
-    else {
-    }
-    
-    nm<-names(y)[-ncol(y)]
-    #nm<-nm[-1]
-    N<-nrow(y)
-    Ybar<-colMeans(y[-ncol(y)])
-    Yib<-mclapply(Klist,function(tmp) colMeans(y[y$Group==tmp,][-ncol(y)]))
-    ni<-mclapply(Klist,function(tmp) nrow(y[y$Group==tmp,]))
-    expV<-mclapply(1:K,function(tmp) (ni[[tmp]]*(Yib[[tmp]]-Ybar)^2)/(K-1))
-    expVar<-0
-    for (i in 1:length(expV)) {
-      expVar=expVar+expV[[i]]
-    }
-    
-    #yy<-mclapply(Klist,function(tmp) apply(y[y$Group==tmp,][-ncol(y)],2,'-',Yib[[tmp]]))
-    unexpV<-0
-    for (i in 1:K) {
-      yy<-y[y$Group==Klist[i],][-ncol(y)]-rep.row(Yib[[i]],ni[[i]])
-      yy<-yy^2/(N-K)
-      unexpV=unexpV+colSums(yy)
-    }
-    
-    Ft<-expVar/unexpV
-    
-    pval<-(1-pf(Ft,df1=K-1,df2=N-K))
-    #message("DEBUG:end Anova step")
-    numtests<<-numtests+length(y)
-    
-    pvals<-pval
-    yaov=data.frame(Probe = nm,p_val=round(as.numeric(pvals),5))
-    #WHY REMOVE THE LAST ROW?yaov=yaov[-1,]
-    yaov=yaov[with(yaov,order(p_val)),]
-    #message("DEBUG:Leaving testdf()...")
-    return(yaov)
-  }
+  # testdf1 <- reactive(
+  #   {
+  #     return(testdf(1))
+  #   })
+  # testdf2 <- reactive(
+  #   {
+  #     return(testdf(2))
+  #   })
+  # 
+  # testdf<-function(tr) {
+  #   ts<-input$tabSelected
+  #   #message(ts)
+  #   a <- input$range_slider1_1
+  #   
+  #   if (tr==1) {
+  #     data<-getPheno1()
+  #   }
+  #   else {
+  #     data<-getPheno2()
+  #   }
+  #   if (is.null(data)) {
+  #     #message("DEBUG:NULL data in getPheno")
+  #     return(NULL)
+  #   }
+  #   #message(paste0("DEBUG:Enter testdf()... with tree:",tr))
+  #   y<-mirInput()
+  #   data<-data[data[,1] %in% y[,1],]
+  #   y<-y[y[,1] %in% data[,1],]
+  #   
+  #   y$Group<-data$Group
+  #   y$Group<-as.factor(y$Group)
+  #   yaov<-0
+  #   
+  #   #message("DEBUG:begin Anova step")
+  #   
+  #   y$Group<-data$Group
+  #   y<-data.frame(as.matrix(y[-1]))
+  #   y$Group<-as.factor(y$Group)
+  #   Klist<-sort(unique(y$Group))
+  #   #message(paste0("DEBUG:Klist=",Klist))
+  #   K<-length(Klist)
+  #   ### FILTER HERE
+  #   Yib<-mclapply(Klist,function(tmp) colMedians(y[y$Group==tmp,][-ncol(y)]))
+  #   
+  #   if (input$searchall > oldsearchall) {
+  #     oldsearchall<<-input$searchall
+  #     oldsearch<<-input$search
+  #     curfilt<<-NULL
+  #   }
+  #   
+  #   
+  #   if (input$search > oldsearch)
+  #   {
+  #     #message(paste0("Search:",input$search," ",oldsearch))
+  #     oldsearch<<-input$search
+  #     curfilt<<-input$testTbl1_1
+  #     if (is.null(curfilt)) {
+  #       curfilt<<-oldselmir1
+  #     }
+  #     #message(paste0("New Search!",curfilt))
+  #   }
+  #   if (!is.null(curfilt)) {
+  #     Ydf<-data.frame(Yib)
+  #     curthresh<-input$fold_thresh/100
+  #     Yfilt<-mclapply(Klist,function(tmp) median(y[y$Group==tmp,curfilt]))
+  #     Yfilt<-(Yfilt<(1-curthresh))*-1+(Yfilt>(1+curthresh)*1)
+  #     Ydf<-data.frame((Ydf<(1-curthresh))*-1+(Ydf>(1+curthresh)*1))
+  #     found<-t(data.frame(colSums(t(Ydf)==Yfilt)))
+  #     names(found)<-colnames(y)[-ncol(y)]
+  #     found<-found[found==K]
+  #     found<-names(found)
+  #     y<-y[found]
+  #     y$Group<-as.factor(data$Group)
+  #     
+  #   }
+  #   else {
+  #   }
+  #   
+  #   nm<-names(y)[-ncol(y)]
+  #   #nm<-nm[-1]
+  #   N<-nrow(y)
+  #   Ybar<-colMeans(y[-ncol(y)])
+  #   Yib<-mclapply(Klist,function(tmp) colMeans(y[y$Group==tmp,][-ncol(y)]))
+  #   ni<-mclapply(Klist,function(tmp) nrow(y[y$Group==tmp,]))
+  #   expV<-mclapply(1:K,function(tmp) (ni[[tmp]]*(Yib[[tmp]]-Ybar)^2)/(K-1))
+  #   expVar<-0
+  #   for (i in 1:length(expV)) {
+  #     expVar=expVar+expV[[i]]
+  #   }
+  #   
+  #   #yy<-mclapply(Klist,function(tmp) apply(y[y$Group==tmp,][-ncol(y)],2,'-',Yib[[tmp]]))
+  #   unexpV<-0
+  #   for (i in 1:K) {
+  #     yy<-y[y$Group==Klist[i],][-ncol(y)]-rep.row(Yib[[i]],ni[[i]])
+  #     yy<-yy^2/(N-K)
+  #     unexpV=unexpV+colSums(yy)
+  #   }
+  #   
+  #   Ft<-expVar/unexpV
+  #   
+  #   pval<-(1-pf(Ft,df1=K-1,df2=N-K))
+  #   #message("DEBUG:end Anova step")
+  #   numtests<<-numtests+length(y)
+  #   
+  #   pvals<-pval
+  #   yaov=data.frame(Probe = nm,p_val=round(as.numeric(pvals),5))
+  #   #WHY REMOVE THE LAST ROW?yaov=yaov[-1,]
+  #   yaov=yaov[with(yaov,order(p_val)),]
+  #   #message("DEBUG:Leaving testdf()...")
+  #   return(yaov)
+  # }
   
   numTests <- reactive({
     a <- input$range_slider1_1
@@ -584,12 +585,12 @@ shinyServer(function(input, output) {
           curPlot<-paste0("plotVar2",local_i)
           output[[curPlot]] <- renderPlot({
             message("DEBUG: render hist Plot")
-            selVariable <- input[["hist_input2"]]
+            selVariable2 <- input[["hist_input2"]]
             bp<-getPhenoExp(getPheno1(),1)
             bp<-bp[bp$Group==local_i,]
-            bp<-bp[selVariable]
+            bp<-bp[selVariable2]
             if (length(bp)>0) {
-              hist(bp[,1],main=paste0("Distribution of ",selVariable),xlab=selVariable,axes=TRUE,right=FALSE)
+              hist(bp[,1],main=paste0("Distribution of ",selVariable2),xlab=selVariable2,axes=TRUE,right=FALSE)
             }
           },width=200,height=250) # this is the actual size of the plot output
         })
@@ -600,19 +601,19 @@ shinyServer(function(input, output) {
     })
   } # done with both trees
   
-  observe ({
-    #message(paste0("Table 5: ",  ifelse(is.null(input$testTbl1_2), "NULL", input$testTbl1_2 )))
-    mrna_sel=input$testTbl1_2
-    #message(input$testTbl1_2)
-    message(numtests)
-  })
-  observe ({
-    if (!is.null(input$testTbl1_1))
-      oldselmir1<<-input$testTbl1_1
-    if (!is.null(input$testTbl2_1))
-      oldselmir2<<-input$testTbl2_1
-    
-  })
+  # observe ({
+  #   #message(paste0("Table 5: ",  ifelse(is.null(input$testTbl1_2), "NULL", input$testTbl1_2 )))
+  #   mrna_sel=input$testTbl1_2
+  #   #message(input$testTbl1_2)
+  #   message(numtests)
+  # })
+  # observe ({
+  #   if (!is.null(input$testTbl1_1))
+  #     oldselmir1<<-input$testTbl1_1
+  #   if (!is.null(input$testTbl2_1))
+  #     oldselmir2<<-input$testTbl2_1
+  #   
+  # })
   
   # input$file1 will be NULL initially. After the user selects and uploads a
   # file, it will be a data frame with 'name', 'size', 'type', and 'datapath'
