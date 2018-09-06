@@ -31,13 +31,13 @@ shinyUI(fluidPage(
                               fileInput('mirfile', 'Expression File 1',
                                         accept=c('text/csv', 'text/comma-separated-values,text/plain')),
                               checkboxInput('transpose1', 'Transpose', FALSE)),
-                            wellPanel(
-                              fileInput('mrnafile', 'Expression File 2',
-                                        accept=c('text/csv', 'text/comma-separated-values,text/plain')),
-                              checkboxInput('transpose2', 'Transpose', FALSE)),
-                            wellPanel(
-                              fileInput('evidence', 'miR-mRNA Evidence',
-                                        accept=c('text/csv', 'text/comma-separated-values,text/plain'))),
+                            # wellPanel(
+                            #   fileInput('mrnafile', 'Expression File 2',
+                            #             accept=c('text/csv', 'text/comma-separated-values,text/plain')),
+                            #   checkboxInput('transpose2', 'Transpose', FALSE)),
+                            # wellPanel(
+                            #   fileInput('evidence', 'miR-mRNA Evidence',
+                            #             accept=c('text/csv', 'text/comma-separated-values,text/plain'))),
                             tags$hr(),
                             wellPanel(
                               checkboxInput("header", "Header", TRUE),
@@ -64,7 +64,7 @@ shinyUI(fluidPage(
                             ,
                             
                             wellPanel(
-                              div(class="row-fluid",htmlOutput("hist_var")),
+                              div(class="row-fluid",htmlOutput("hist_var1")),
                               div(class="row-fluid",htmlOutput("hist_var2"))
                             ),
                             

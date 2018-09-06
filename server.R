@@ -216,28 +216,22 @@ shinyServer(function(input, output) {
   }
   
   
-  
-  getPheno<-function(curtr) {
+  getPheno<-function(curtr,histvar) {
     #message(paste0("DEBUG:getPheno tree:",curtr))
-    for (t in 1:2) {
-      for (i in 1:8) {
-        a<-input[[paste0("range_slider",t,"_",i)]]
-        #message(a)
-      }}
-    ds1<-input$depth_slider1
-    ds2<-input$depth_slider2
+    #ds1<-input$depth_slider1
+    #ds2<-input$depth_slider2
     
-    if (curtr==1) {
+    #if (curtr==1) {
       oldselmir=oldselmir1
       ds<-input$depth_slider1
       tbl<-input$testTbl1_1
-    }
-    else
-    {
-      oldselmir=oldselmir2
-      ds<-input$depth_slider2
-      tbl<-input$testTbl2_1
-    }
+    # }
+    # else
+    # {
+    #   oldselmir=oldselmir2
+    #   ds<-input$depth_slider2
+    #   tbl<-input$testTbl2_1
+    # }
     
     if (is.null(ds)) {
       return(NULL)
@@ -249,8 +243,9 @@ shinyServer(function(input, output) {
       #message("DEBUG:datasetInput is null")
       return(NULL)
     }
+    
     #x<-x[c(colnames(x)[1],sapply(1:(2^ds-1),function(x) input[[paste0("var",curtr,"_",x)]]))]
-    x<-x[c(input[["hist_input"]],colnames(x)[1],sapply(1:(2^ds-1),function(x) input[[paste0("var",curtr,"_",x)]]))]
+    x<-x[c(input[[paste0("hist_input",histvar)]],colnames(x)[1],sapply(1:(2^ds-1),function(x) input[[paste0("var",curtr,"_",x)]]))]
     #x<-x[c(input[["hist_input2"]],colnames(x)[1],sapply(1:(2^ds-1),function(x) input[[paste0("var",curtr,"_",x)]]))]
     x <- x[complete.cases(x), ]
     #message("DEBUG:getPheno3")
@@ -275,13 +270,14 @@ shinyServer(function(input, output) {
     #message(paste0("GetPheno: ",ret))
     return(ret)
   }
-  getPheno1<-reactive({
-    return(getPheno(1))
-  })
   
-  getPheno2<-reactive({
-    return(getPheno(2))
-  })
+  # getPheno1<-reactive({
+  #   return(getPheno(1))
+  # })
+  # 
+  # getPheno2<-reactive({
+  #   return(getPheno(2))
+  # })
   
   
   
@@ -564,9 +560,12 @@ shinyServer(function(input, output) {
           local_i <- i
           curPlot<-paste0("plotVar1",local_i)
           output[[curPlot]] <- renderPlot({
-            message("DEBUG: render hist Plot")
-            selVariable <- input[["hist_input"]]
-            bp<-getPhenoExp(getPheno1(),1)
+            message("DEBUG1: render hist Plot")
+            selVariable <- input[["hist_input1"]]
+            #message(paste0("DEBUG1: selVariable  ",selVariable))
+            bp<-getPhenoExp(getPheno(1,1),1)
+            #message(paste0("DEBUG1: getPheno(1)  ",getPheno(1)))
+            #message(paste0("DEBUG1: bp  ",bp))
             bp<-bp[bp$Group==local_i,]
             #write.csv(bp, file = paste0("Cohort",local_i),row.names = FALSE)
             bp<-bp[selVariable]
@@ -584,11 +583,17 @@ shinyServer(function(input, output) {
           local_i <- i
           curPlot<-paste0("plotVar2",local_i)
           output[[curPlot]] <- renderPlot({
-            message("DEBUG: render hist Plot")
+            message("DEBUG2: render hist Plot")
             selVariable2 <- input[["hist_input2"]]
-            bp<-getPhenoExp(getPheno1(),1)
+            #message(paste0("DEBUG2: selVariable  ",selVariable2))
+            bp<-getPhenoExp(getPheno(1,2),1)
+            #message(paste0("DEBUG2: getPheno(1)  ",getPheno(1)))
+            #message(paste0("DEBUG2: bp  ",bp))
             bp<-bp[bp$Group==local_i,]
+            #message(paste0("DEBUG2: selVariable BEFORE ",selVariable2))
+            #message(paste0("DEBUG2: selVariable BEFORE ",colnames(bp)))
             bp<-bp[selVariable2]
+            #message(paste0("DEBUG2: selVariable AFTER ",selVariable2))
             if (length(bp)>0) {
               hist(bp[,1],main=paste0("Distribution of ",selVariable2),xlab=selVariable2,axes=TRUE,right=FALSE)
             }
@@ -746,8 +751,8 @@ shinyServer(function(input, output) {
         curvar<-paste0("var",curtr,'_',row)
         #message("MAH in loopB4")
         curcol<-paste0('choose_columns',curtr,'_',row)
-        hist_var<-'hist_var'
-        hist_input<-'hist_input'
+        hist_var1<-'hist_var1'
+        hist_input1<-'hist_input1'
         hist_var2<-'hist_var2'
         hist_input2<-'hist_input2'
         output[[curcol]] <- renderUI({
@@ -758,13 +763,13 @@ shinyServer(function(input, output) {
           }
           selectInput(curvar, paste0("Variable ",row), colnames(datasetInput()))
         })
-        output[[hist_var]] <- renderUI({
+        output[[hist_var1]] <- renderUI({
           #message("DEBUG: render cur col")
           if (is.null(input$file1) && (input$loaddemo==0))
           {#message("MAH in null nputfile")
             return(NULL)
           }
-          selectInput(hist_input, ("Histogram Var "), colnames(datasetInput()))
+          selectInput(hist_input1, ("Histogram Var 1"), colnames(datasetInput()))
         })
         output[[hist_var2]] <- renderUI({
           #message("DEBUG: render cur col")
