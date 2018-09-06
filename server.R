@@ -49,47 +49,47 @@ shinyServer(function(input, output) {
       return(NULL) }
     return(x)})
   
-  mirInput<-reactive({
-    #input$search
-    #message("READING MIRINPUT")
-    mirFile <- input$mirfile
-    
-    if (!is.null(mirFile))
-      y<-read.csv(mirFile$datapath,check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
-    else if (input$loaddemo > 0) {
-      #message("DEFAULT DATASET")
-      y<-read.csv("./data/peax_demo_mrna2.csv", header=TRUE, sep=",", quote="\"")
-    }
-    else
-      return(NULL)
-    
-    if (nrow(y)>50000) {
-      y<-y[1:50000,]
-    }
-    y1<-y
-    if (input$transpose1) {
-      #message("Transposing Exp1...")
-      yn=y[,1]
-      cn=colnames(y1)[-1]
-      y<-as.data.frame(t(y[,2:ncol(y)]))
-      y<-setNames(y,yn)
-      y<-cbind(cn,y)
-      colnames(y)[1]<-"Pat"
-    }
-    #if (input$search > oldsearch)
-    #{
-    #	#message("New Search!")
-    #   }
-    #  oldsearch<<-input$search
-    return(y)})
-  evidInput<-reactive({
-    #message("READING EVIDENCE")
-    evidFile <- input$evidence
-    
-    if (is.null(evidFile))
-      return(NULL)
-    z<-read.csv(mrnaFile$datapath, check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
-    return(z)})
+  # mirInput<-reactive({
+  #   #input$search
+  #   #message("READING MIRINPUT")
+  #   mirFile <- input$mirfile
+  #   
+  #   if (!is.null(mirFile))
+  #     y<-read.csv(mirFile$datapath,check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
+  #   else if (input$loaddemo > 0) {
+  #     #message("DEFAULT DATASET")
+  #     y<-read.csv("./data/peax_demo_mrna2.csv", header=TRUE, sep=",", quote="\"")
+  #   }
+  #   else
+  #     return(NULL)
+  #   
+  #   if (nrow(y)>50000) {
+  #     y<-y[1:50000,]
+  #   }
+  #   y1<-y
+  #   if (input$transpose1) {
+  #     #message("Transposing Exp1...")
+  #     yn=y[,1]
+  #     cn=colnames(y1)[-1]
+  #     y<-as.data.frame(t(y[,2:ncol(y)]))
+  #     y<-setNames(y,yn)
+  #     y<-cbind(cn,y)
+  #     colnames(y)[1]<-"Pat"
+  #   }
+  #   #if (input$search > oldsearch)
+  #   #{
+  #   #	#message("New Search!")
+  #   #   }
+  #   #  oldsearch<<-input$search
+  #   return(y)})
+  # evidInput<-reactive({
+  #   #message("READING EVIDENCE")
+  #   evidFile <- input$evidence
+  #   
+  #   if (is.null(evidFile))
+  #     return(NULL)
+  #   z<-read.csv(mrnaFile$datapath, check.names=FALSE,header=input$header, sep=input$sep, quote=input$quote)
+  #   return(z)})
   # mrnaInput<-reactive({
   #   #message("READING MRNAINPUT")
   #   mrnaFile <- input$mrnafile
@@ -169,51 +169,51 @@ shinyServer(function(input, output) {
     return(retpheno)
   }
   
-  getPhenoExp<-function(x, curtr) {
-    
-    y <- mirInput()
-    
-    ds1<-input$depth_slider1
-    #ds2<-input$depth_slider2
-    
-    #if (curtr==1) {
-      oldselmir=oldselmir1
-      ds<-input$depth_slider1
-      tbl<-input$testTbl1_1
-    #}
-    # else
-    # {
-    #   oldselmir=oldselmir2
-    #   ds<-input$depth_slider2
-    #   tbl<-input$testTbl2_1
-    # }
-    
-    #selmir<-tbl[curtr]
-    selmir<-tbl
-    # BROKEN here? selmir<-"rand.miR.101"
-    #message("getPhenoExp")
-    #message(selmir)
-    #message("getPhenoExp2")
-    if (is.null(selmir) || is.na(selmir)) {
-      if (is.null(oldselmir) || oldselmir==0)
-        selmir = colnames(y)[2]
-      else
-        selmir = oldselmir
-    }
-    else {
-      #selmir=colnames(y)[selmir]
-      selmir=selmir
-    }
-    
-    #make a simple pheno vector with PT column and pheno value
-    themir<-cbind(y[1],y[selmir])
-    colnames(themir)[2]<-"Pheno"
-    
-    #message("DEBUG:getPheno3d")
-    x<-merge(x,themir,all.x=TRUE,by=1) #merge pheno by Pt # in first col
-    #message("DEBUG:getPhenoExp3d")
-    return(x)
-  }
+  # getPhenoExp<-function(x, curtr) {
+  #   
+  #   y <- mirInput()
+  #   
+  #   ds1<-input$depth_slider1
+  #   #ds2<-input$depth_slider2
+  #   
+  #   #if (curtr==1) {
+  #     oldselmir=oldselmir1
+  #     ds<-input$depth_slider1
+  #     tbl<-input$testTbl1_1
+  #   #}
+  #   # else
+  #   # {
+  #   #   oldselmir=oldselmir2
+  #   #   ds<-input$depth_slider2
+  #   #   tbl<-input$testTbl2_1
+  #   # }
+  #   
+  #   #selmir<-tbl[curtr]
+  #   selmir<-tbl
+  #   # BROKEN here? selmir<-"rand.miR.101"
+  #   #message("getPhenoExp")
+  #   #message(selmir)
+  #   #message("getPhenoExp2")
+  #   if (is.null(selmir) || is.na(selmir)) {
+  #     if (is.null(oldselmir) || oldselmir==0)
+  #       selmir = colnames(y)[2]
+  #     else
+  #       selmir = oldselmir
+  #   }
+  #   else {
+  #     #selmir=colnames(y)[selmir]
+  #     selmir=selmir
+  #   }
+  #   
+  #   #make a simple pheno vector with PT column and pheno value
+  #   themir<-cbind(y[1],y[selmir])
+  #   colnames(themir)[2]<-"Pheno"
+  #   
+  #   #message("DEBUG:getPheno3d")
+  #   x<-merge(x,themir,all.x=TRUE,by=1) #merge pheno by Pt # in first col
+  #   #message("DEBUG:getPhenoExp3d")
+  #   return(x)
+  # }
   
   
   getPheno<-function(curtr,histvar) {
@@ -460,7 +460,7 @@ shinyServer(function(input, output) {
     numTests()
   })
   
-  for (tr in 1:2) {
+  for (tr in 1:1) {
     local ({
       curtr<-tr
       tbl1<-paste0("testTbl",curtr,"_1")
@@ -487,70 +487,70 @@ shinyServer(function(input, output) {
       })
       # HERE WE message OUT MICRORNA
       # messages table with selectable rows and conditional formatting
-      output[[tbl2]] <- renderUI({
-        tc<-NULL
-        
-        if (curtr==1)
-          tbl<-input$testTbl1_1
-        else
-          tbl<-input$testTbl2_1
-        selmir<-tbl[curtr]
-        if (!is.null(tbl1))
-          tc<-testcor(curtr)
-        if (!is.null(tc)) {
-          # restrict to top 10 mRNA
-          tc<-na.omit(tc[1:10,])
-          tc[,3]<-tc[,2]
-          #tc[,4]<-tc[,2]
-          colnames(tc)[3]<-colnames(tc)[2]
-          colnames(tc)[2]<-"Link"
-          
-          mbnames<-tc
-          mbnames[,1]<-gsub("_st","",mbnames[,1])
-          mbnames[,1]<-gsub("[.]","_",mbnames[,1])
-          mbnames[,1]<-gsub("_star","_5p",mbnames[,1])
-          tc[,2]<-paste("<a href=http://www.mirbase.org/cgi-bin/query.pl?terms=",mbnames[,1]," target=_blank>","MiRBase","</a>",sep="")
-          mbnames[,1]<-gsub("mir","miR",mbnames[,1])
-          mbnames[,1]<-gsub("_","-",mbnames[,1])
-          #tc[,4]<-sapply(1:nrow(tc), function(x) {
-          #cur_mm<-get.multimir(target=oldselmir1,mirna=mbnames[x,1])$validated$pubmedid;
-          #	cur_mm<-""
-          #paste("<a href=www.ncbi.nlm.nih.gov/pubmed/",cur_mm[1],">",length(cur_mm),"</a>",sep="")
-          
-          #})
-          #colnames(tc)[4]<-"Bind"
-          HTML(df2html(tc, class = "tbl selRow", id = tbl2,
-                       cellClass = cbind(rep(NA, nrow(tc)), rep(NA, nrow(tc)), ifelse(abs(tc[,3])>=input$sp_thresh, 'cellGreen', 'cellRed'),NA)
-                       #          cellClass = cbind(rep(NA, nrow(tc)), rep(NA, nrow(tc)), ifelse(abs(tc[,3])>=input$sp_thresh, 'cellGreen', 'cellRed'))
-          )
-          )
-        }
-      })
-      
-      curchoose_mir<-paste0("choose_mir",curtr)
-      output[[curchoose_mir]] <- renderUI({
-        if (is.null(input$mirfile))
-          return(NULL)
-        
-        selectInput("mir", "microRNA", colnames(mirInput()))
-      })
-      
-      # Compute the forumla text in a reactive expression since it is
-      formulaText1 <- reactive({
-        selmir<-input$testTbl1_1
-        if (selmir==null) {
-          selmir = y[1,1]
-        }
-        paste(selmir," ~","pheno")
-      })
-      # Compute the forumla text in a reactive expression since it is
-      formulaText2 <- reactive({
-        selmir<-input$testTbl2_1
-        if (selmir==null) {
-          selmir = y[1,1]
-        }
-        paste(selmir," ~","pheno")
-      })
+      # output[[tbl2]] <- renderUI({
+      #   tc<-NULL
+      #   
+      #   if (curtr==1)
+      #     tbl<-input$testTbl1_1
+      #   else
+      #     tbl<-input$testTbl2_1
+      #   selmir<-tbl[curtr]
+      #   if (!is.null(tbl1))
+      #     tc<-testcor(curtr)
+      #   if (!is.null(tc)) {
+      #     # restrict to top 10 mRNA
+      #     tc<-na.omit(tc[1:10,])
+      #     tc[,3]<-tc[,2]
+      #     #tc[,4]<-tc[,2]
+      #     colnames(tc)[3]<-colnames(tc)[2]
+      #     colnames(tc)[2]<-"Link"
+      #     
+      #     mbnames<-tc
+      #     mbnames[,1]<-gsub("_st","",mbnames[,1])
+      #     mbnames[,1]<-gsub("[.]","_",mbnames[,1])
+      #     mbnames[,1]<-gsub("_star","_5p",mbnames[,1])
+      #     tc[,2]<-paste("<a href=http://www.mirbase.org/cgi-bin/query.pl?terms=",mbnames[,1]," target=_blank>","MiRBase","</a>",sep="")
+      #     mbnames[,1]<-gsub("mir","miR",mbnames[,1])
+      #     mbnames[,1]<-gsub("_","-",mbnames[,1])
+      #     #tc[,4]<-sapply(1:nrow(tc), function(x) {
+      #     #cur_mm<-get.multimir(target=oldselmir1,mirna=mbnames[x,1])$validated$pubmedid;
+      #     #	cur_mm<-""
+      #     #paste("<a href=www.ncbi.nlm.nih.gov/pubmed/",cur_mm[1],">",length(cur_mm),"</a>",sep="")
+      #     
+      #     #})
+      #     #colnames(tc)[4]<-"Bind"
+      #     HTML(df2html(tc, class = "tbl selRow", id = tbl2,
+      #                  cellClass = cbind(rep(NA, nrow(tc)), rep(NA, nrow(tc)), ifelse(abs(tc[,3])>=input$sp_thresh, 'cellGreen', 'cellRed'),NA)
+      #                  #          cellClass = cbind(rep(NA, nrow(tc)), rep(NA, nrow(tc)), ifelse(abs(tc[,3])>=input$sp_thresh, 'cellGreen', 'cellRed'))
+      #     )
+      #     )
+      #   }
+      # })
+      # 
+      # curchoose_mir<-paste0("choose_mir",curtr)
+      # output[[curchoose_mir]] <- renderUI({
+      #   if (is.null(input$mirfile))
+      #     return(NULL)
+      #   
+      #   selectInput("mir", "microRNA", colnames(mirInput()))
+      # })
+      # 
+      # # Compute the forumla text in a reactive expression since it is
+      # formulaText1 <- reactive({
+      #   selmir<-input$testTbl1_1
+      #   if (selmir==null) {
+      #     selmir = y[1,1]
+      #   }
+      #   paste(selmir," ~","pheno")
+      # })
+      # # Compute the forumla text in a reactive expression since it is
+      # formulaText2 <- reactive({
+      #   selmir<-input$testTbl2_1
+      #   if (selmir==null) {
+      #     selmir = y[1,1]
+      #   }
+      #   paste(selmir," ~","pheno")
+      # })
       
       ds1<-2
       # Generate a plot of the requested variable against x and only
@@ -563,7 +563,8 @@ shinyServer(function(input, output) {
             message("DEBUG1: render hist Plot")
             selVariable <- input[["hist_input1"]]
             #message(paste0("DEBUG1: selVariable  ",selVariable))
-            bp<-getPhenoExp(getPheno(1,1),1)
+            #bp<-getPhenoExp(getPheno(1,1),1)
+            bp<-getPheno(1,1)
             #message(paste0("DEBUG1: getPheno(1)  ",getPheno(1)))
             #message(paste0("DEBUG1: bp  ",bp))
             bp<-bp[bp$Group==local_i,]
@@ -586,7 +587,8 @@ shinyServer(function(input, output) {
             message("DEBUG2: render hist Plot")
             selVariable2 <- input[["hist_input2"]]
             #message(paste0("DEBUG2: selVariable  ",selVariable2))
-            bp<-getPhenoExp(getPheno(1,2),1)
+            #bp<-getPhenoExp(getPheno(1,2),1)
+            bp<-getPheno(1,2)
             #message(paste0("DEBUG2: getPheno(1)  ",getPheno(1)))
             #message(paste0("DEBUG2: bp  ",bp))
             bp<-bp[bp$Group==local_i,]
@@ -628,12 +630,12 @@ shinyServer(function(input, output) {
   output$pcontents <- renderTable({
     datasetInput()
   })
-  output$mircontents <- renderTable({
-    mirInput()
-  })
-  output$mrnacontents <- renderTable({
-    mrnaInput()
-  })
+  # output$mircontents <- renderTable({
+  #   mirInput()
+  # })
+  # output$mrnacontents <- renderTable({
+  #   mrnaInput()
+  # })
   
   
   
@@ -740,7 +742,7 @@ shinyServer(function(input, output) {
   }
   ########### end tree_traverse
   
-  for (tr in 1:2) { # 2 trees
+  for (tr in 1:1) { # 2 trees
     for (i in 1:n) {
       #message(paste0("DEBUG: In outer loop",tr," ",i))
       local({
@@ -841,7 +843,7 @@ shinyServer(function(input, output) {
   observe({
     #message("DEBUG:range_slider observe")
     
-    for (t in 1:2) {
+    for (t in 1:1) {
       for (i in 1:n) {
         input[[paste0("range_slider",t,"_",i)]]
       }}

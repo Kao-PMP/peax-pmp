@@ -27,10 +27,10 @@ shinyUI(fluidPage(
                               fileInput('file1', 'Phenotype File',
                                         accept=c('text/csv', 'text/comma-separated-values,text/plain')),
                               checkboxInput('transpose_pheno', 'Transpose', FALSE)),
-                            wellPanel(
-                              fileInput('mirfile', 'Expression File 1',
-                                        accept=c('text/csv', 'text/comma-separated-values,text/plain')),
-                              checkboxInput('transpose1', 'Transpose', FALSE)),
+                            # wellPanel(
+                            #   fileInput('mirfile', 'Expression File 1',
+                            #             accept=c('text/csv', 'text/comma-separated-values,text/plain')),
+                            #   checkboxInput('transpose1', 'Transpose', FALSE)),
                             # wellPanel(
                             #   fileInput('mrnafile', 'Expression File 2',
                             #             accept=c('text/csv', 'text/comma-separated-values,text/plain')),
