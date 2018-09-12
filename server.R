@@ -15,20 +15,20 @@ numtests=0
 curfilt=0
 
 shinyServer(function(input, output) {
-  output$tablespacing <- renderText({
-    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n."
-  })
-  output$tablespacing2 <- renderText({
-    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n."
-  })
+  # output$tablespacing <- renderText({
+  #   "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n."
+  # })
+  # output$tablespacing2 <- renderText({
+  #   "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n."
+  # })
   
-  testcor2<-reactive({
-    return(testcor(2))
-  })
-  
-  testcor1<-reactive({
-    return(testcor(1))
-  })
+  # testcor2<-reactive({
+  #   return(testcor(2))
+  # })
+  # 
+  # testcor1<-reactive({
+  #   return(testcor(1))
+  # })
   
   datasetInput<-reactive({
     inFile <- input$file1
@@ -444,47 +444,47 @@ shinyServer(function(input, output) {
   #   return(yaov)
   # }
   
-  numTests <- reactive({
-    a <- input$range_slider1_1
-    b <- input$range_slider1_2
-    c <- input$range_slider1_3
-    d <- input$range_slider1_1
-    e <- input$range_slider1_2
-    f <- input$range_slider1_3
-    g <- input$searchall
-    h <- input$search
-    paste0("#Tests:",numtests)
-  })
-  
-  output$numtests<-renderText({
-    numTests()
-  })
+  # numTests <- reactive({
+  #   a <- input$range_slider1_1
+  #   b <- input$range_slider1_2
+  #   c <- input$range_slider1_3
+  #   d <- input$range_slider1_1
+  #   e <- input$range_slider1_2
+  #   f <- input$range_slider1_3
+  #   g <- input$searchall
+  #   h <- input$search
+  #   paste0("#Tests:",numtests)
+  # })
+  # 
+  # output$numtests<-renderText({
+  #   numTests()
+  # })
   
   for (tr in 1:1) {
     local ({
       curtr<-tr
-      tbl1<-paste0("testTbl",curtr,"_1")
-      tbl2<-paste0("testTbl",curtr,"_2")
-      # messages MIR table with selectable rows and conditional formatting
-      output[[tbl1]] <- renderUI({
-        tdf<-testdf(curtr)
-        if (!is.null(tdf)) {
-          # restrict to top 32 mirs
-          tdf<-na.omit(tdf[1:32,])
-          tdf[,3]<-tdf[,2]
-          colnames(tdf)[3]<-colnames(tdf)[2]
-          colnames(tdf)[2]<-"Link"
-          mbnames<-tdf
-          mbnames[,1]<-gsub("_st","",mbnames[,1])
-          mbnames[,1]<-gsub("[.]","_",mbnames[,1])
-          mbnames[,1]<-gsub("_star","_5p",mbnames[,1])
-          tdf[,2]<-paste("<a href=http://www.genecards.org/cgi-bin/carddisp.pl?gene=",mbnames[,1]," target=_blank>",mbnames[,1],"</a>",sep="")
-          HTML(df2html(tdf, class = "tbl selRow", id = tbl1,
-                       cellClass = cbind(rep(NA, nrow(tdf)), rep(NA, nrow(tdf)), ifelse(tdf[,3]>=PTHRESH[input$pv_thresh], 'cellRed', 'cellGreen'))
-          )
-          )
-        }
-      })
+      # tbl1<-paste0("testTbl",curtr,"_1")
+      # #tbl2<-paste0("testTbl",curtr,"_2")
+      # # messages MIR table with selectable rows and conditional formatting
+      # output[[tbl1]] <- renderUI({
+      #   tdf<-testdf(curtr)
+      #   if (!is.null(tdf)) {
+      #     # restrict to top 32 mirs
+      #     tdf<-na.omit(tdf[1:32,])
+      #     tdf[,3]<-tdf[,2]
+      #     colnames(tdf)[3]<-colnames(tdf)[2]
+      #     colnames(tdf)[2]<-"Link"
+      #     mbnames<-tdf
+      #     mbnames[,1]<-gsub("_st","",mbnames[,1])
+      #     mbnames[,1]<-gsub("[.]","_",mbnames[,1])
+      #     mbnames[,1]<-gsub("_star","_5p",mbnames[,1])
+      #     tdf[,2]<-paste("<a href=http://www.genecards.org/cgi-bin/carddisp.pl?gene=",mbnames[,1]," target=_blank>",mbnames[,1],"</a>",sep="")
+      #     HTML(df2html(tdf, class = "tbl selRow", id = tbl1,
+      #                  cellClass = cbind(rep(NA, nrow(tdf)), rep(NA, nrow(tdf)), ifelse(tdf[,3]>=PTHRESH[input$pv_thresh], 'cellRed', 'cellGreen'))
+      #     )
+      #     )
+      #   }
+      # })
       # HERE WE message OUT MICRORNA
       # messages table with selectable rows and conditional formatting
       # output[[tbl2]] <- renderUI({
