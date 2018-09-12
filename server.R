@@ -41,7 +41,7 @@ shinyServer(function(input, output) {
     else if (input$loaddemo > 0) {
       #message("DEFAULT DATASET")
       x<-read.csv("./data/peax_demo_pheno.csv", header=input$header, sep=input$sep, quote=input$quote)
-      #x<-read.csv("./data/combined.csv", header=input$header, sep=input$sep, quote=input$quote)
+      #x<-read.csv("./data/combined-5.csv", header=input$header, sep=input$sep, quote=input$quote)
       #x<-read.csv("./data/pilot_4.csv", header=input$header, sep=input$sep, quote=input$quote)
     }
     else
@@ -628,7 +628,7 @@ shinyServer(function(input, output) {
   # data can be found.
   
   output$pcontents <- renderTable({
-    datasetInput()
+    datasetInput()[c(1:80),]
   })
   # output$mircontents <- renderTable({
   #   mirInput()
